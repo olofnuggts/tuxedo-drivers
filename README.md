@@ -60,6 +60,10 @@ All:
 
 # Troubleshooting
 
+## Fans Control
+
+- For my pcspecialist Latei AI `echo "options uniwill_wmi ec_direct_io=1" | sudo tee /etc/modprobe.d/tuxedo-fan-fix.conf` and then `sudo update-initramfs -u` fixed fan control not working.
+
 ## The keyboard backlight control and/or touchpad toggle key combinations do not work
 For all devices with a touchpad toggle key(-combo) and some devices with keyboard backlight control key-combos the driver does nothing more then to send the corresponding key event to userspace where it is the desktop environments duty to carry out the action. Some smaller desktop environments however don't bind an action to these keys by default so it seems that these keys don't work.
 
@@ -77,3 +81,5 @@ If you want to hack away at this matter yourself please follow the following pre
 - We mostly can't share documentation, but we can answer questions.
 - Code interacting with the EC, which is most of tuxedo-drivers, can brick devices and therefore must be ensured to only run on compatible and tested devices.
 - If you use tuxedo-drivers as a reference or code snippets from it, a "Codeveloped-by:\<name\> \<tuxedo_email\>" must be included in your upstream commit, with \<name\> and \<tuxedo_email\> depending on the actual part of tuxedo-drivers being used. Please talk to us regarding this.
+
+
