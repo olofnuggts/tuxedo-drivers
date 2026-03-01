@@ -97,6 +97,9 @@ case $1 in
 esac
 ```
 
+## Touchpad fix after it start acting up
+- `sudo modprobe -r i2c_hid_acpi && sudo modprobe i2c_hid_acpi
+
 
 ## The keyboard backlight control and/or touchpad toggle key combinations do not work
 For all devices with a touchpad toggle key(-combo) and some devices with keyboard backlight control key-combos the driver does nothing more then to send the corresponding key event to userspace where it is the desktop environments duty to carry out the action. Some smaller desktop environments however don't bind an action to these keys by default so it seems that these keys don't work.
