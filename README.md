@@ -99,6 +99,10 @@ esac
 
 ## Touchpad fix after it start acting up
 - `sudo modprobe -r i2c_hid_acpi && sudo modprobe i2c_hid_acpi
+- You can create a shortcut for this command to make it more convenient to use.
+  - The shortcut command: `sudo modprobe -r i2c_hid_acpi && sudo modprobe i2c_hid_acpi`
+  - Name: fix TouchPad
+  - custom shortcut key: eg: Ctrl + Alt + P
 
 
 ## The keyboard backlight control and/or touchpad toggle key combinations do not work
