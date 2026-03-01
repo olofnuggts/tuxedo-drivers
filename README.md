@@ -63,6 +63,40 @@ All:
 ## Fans Control
 
 - For my pcspecialist Latei AI `echo "options uniwill_wmi ec_direct_io=1" | sudo tee /etc/modprobe.d/tuxedo-fan-fix.conf` and then `sudo update-initramfs -u` fixed fan control not working.
+- After rebooting it should work.
+
+## Keyboard stop working after suspend
+- To fix this: create a file under /lib/systemd/system-sleep/keyboard-fix.sh: 
+- `touch /lib/systemd/system-sleep/keyboard-fix.sh`
+- chmod +x /lib/systemd/system-sleep/keyboard-fix.sh
+- Add the following content to it:
+
+```bash
+#!/bin/sh
+case $1 in
+  post)
+    # 1. Wait a slightly longer moment for the hardware to wake up completely
+    sleep 2
+
+    # 2. Force the internal keyboard (serio0) to reconnect safely
+    if [ -e /sys/bus/serio/devices/serio0 ]; then
+        # Check if it is currently bound before trying to unbind
+        if [ -L /sys/bus/serio/drivers/atkbd/serio0 ]; then
+            echo -n "serio0" > /sys/bus/serio/drivers/atkbd/unbind 2>/dev/null
+        fi
+        
+        sleep 0.5
+        
+        # Bind it back, and hide harmless errors if it auto-bound
+        echo -n "serio0" > /sys/bus/serio/drivers/atkbd/bind 2>/dev/null
+    fi
+
+    # 3. Restart the Tuxedo Control Center to restore backlight
+    systemctl restart tccd
+    ;;
+esac
+```
+
 
 ## The keyboard backlight control and/or touchpad toggle key combinations do not work
 For all devices with a touchpad toggle key(-combo) and some devices with keyboard backlight control key-combos the driver does nothing more then to send the corresponding key event to userspace where it is the desktop environments duty to carry out the action. Some smaller desktop environments however don't bind an action to these keys by default so it seems that these keys don't work.
